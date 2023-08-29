@@ -11,15 +11,15 @@ const worker = new SingleWorker({
 });
 
 const emoji_roles_map = new Map<string, string>();
-emoji_roles_map.set("green_circle", "930965888700678216"); //junior
-emoji_roles_map.set("red_circle", "930965946158432346"); //senior
+emoji_roles_map.set("🟢", "930965888700678216"); //junior (🟢)
+emoji_roles_map.set("🔴", "930965946158432346"); //senior (🔴)
 
-emoji_roles_map.set("blue_circle", "1011045603528167444"); //hybrid
-emoji_roles_map.set("orange_circle", "1011045541842518129"); //in person
+emoji_roles_map.set("🔵", "1011045603528167444"); //hybrid (🔵)
+emoji_roles_map.set("🟠", "1011045541842518129"); //in person (🟠)
 
-emoji_roles_map.set("purple_circle", "1061919256230494269"); //Balasooriya
-emoji_roles_map.set("green_circle", "1020443675026800670"); //Altunkaya
-emoji_roles_map.set("blue_square", "1020444262908829706"); //Chen
+emoji_roles_map.set("🟣", "1061919256230494269"); //Balasooriya (🟣)
+emoji_roles_map.set("🟢", "1020443675026800670"); //Altunkaya (🟢)
+emoji_roles_map.set("🟦", "1020444262908829706"); //Chen (blue square: 🟦)
 
 const emote_roles_map = new Map<string, string>();
 emote_roles_map.set("930966776072777770", "930966018812153856"); //rider
@@ -32,7 +32,7 @@ worker.on("MESSAGE_REACTION_ADD", async (r) => {
     //three messages for roles
     if(r.message_id !== "930969230084546641" 
         && r.message_id !== "1061919018434433054"
-        && r.message_id !== ""
+        && r.message_id !== "1146125919606542346"
     ) return;
     
     const user_id = r.user_id;
@@ -59,7 +59,7 @@ worker.on("MESSAGE_REACTION_ADD", async (r) => {
 worker.on("MESSAGE_REACTION_REMOVE", async (r) => {
     if(r.message_id !== "930969230084546641"
         && r.message_id !== "1061919018434433054"
-        && r.message_id !== ""
+        && r.message_id !== "1146125919606542346"
     ) return;
     
     const user_id = r.user_id;
