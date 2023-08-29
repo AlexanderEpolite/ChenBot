@@ -57,17 +57,6 @@ worker.on("MESSAGE_REACTION_ADD", async (r) => {
     } else if(!!r.emoji.id) { //custom server emote
         let role = emote_roles_map.get(r.emoji.id);
         
-        //since :green_circle: exists on two messages, differentiate between them
-        if(!role) {
-            if(r.message_id === "930969230084546641") { //junior
-                role = "930965888700678216";
-            } else if(r.message_id === "1061919018434433054") { //altunkaya
-                role = "1020443675026800670";
-            } else {
-                return;
-            }
-        }
-        
         console.log(`added ${role} to ${user_id}`);
         
         await worker.api.members.addRole("915466119370907649", user_id, role);
@@ -83,10 +72,19 @@ worker.on("MESSAGE_REACTION_REMOVE", async (r) => {
     const user_id = r.user_id;
     
     if(!r.emoji.id) { //built in emoji
-        const role = emoji_roles_map.get(r.emoji.name as string) as string;
+        let role = emoji_roles_map.get(r.emoji.name as string) as string;
         
-        if(!role) return;
-    
+        //since :green_circle: exists on two messages, differentiate between them
+        if(!role) {
+            if(r.message_id === "930969230084546641") { //junior
+                role = "930965888700678216";
+            } else if(r.message_id === "1061919018434433054") { //altunkaya
+                role = "1020443675026800670";
+            } else {
+                return;
+            }
+        }
+        
         console.log(`removed ${role} from ${user_id}`);
         
         await worker.api.members.removeRole("915466119370907649", user_id, role);
