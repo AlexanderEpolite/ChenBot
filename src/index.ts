@@ -11,14 +11,14 @@ const worker = new SingleWorker({
 });
 
 const emoji_roles_map = new Map<string, string>();
-emoji_roles_map.set("🟢", "930965888700678216"); //junior (🟢)
+// emoji_roles_map.set("🟢", "930965888700678216"); //junior (🟢)
 emoji_roles_map.set("🔴", "930965946158432346"); //senior (🔴)
 
 emoji_roles_map.set("🔵", "1011045603528167444"); //hybrid (🔵)
 emoji_roles_map.set("🟠", "1011045541842518129"); //in person (🟠)
 
 emoji_roles_map.set("🟣", "1061919256230494269"); //Balasooriya (🟣)
-emoji_roles_map.set("🟢", "1020443675026800670"); //Altunkaya (🟢)
+// emoji_roles_map.set("🟢", "1020443675026800670"); //Altunkaya (🟢)
 emoji_roles_map.set("🟦", "1020444262908829706"); //Chen (blue square: 🟦)
 
 const emote_roles_map = new Map<string, string>();
@@ -38,17 +38,35 @@ worker.on("MESSAGE_REACTION_ADD", async (r) => {
     const user_id = r.user_id;
     
     if(!r.emoji.id) { //built in emoji
-        const role = emoji_roles_map.get(r.emoji.name as string) as string;
+        let role = emoji_roles_map.get(r.emoji.name as string) as string;
         
-        if(!role) return;
+        //since :green_circle: exists on two messages, differentiate between them
+        if(!role) {
+            if(r.message_id === "930969230084546641") { //junior
+                role = "930965888700678216";
+            } else if(r.message_id === "1061919018434433054") { //altunkaya
+                role = "1020443675026800670";
+            } else {
+                return;
+            }
+        }
     
         console.log(`added ${role} to ${user_id}`);
         
         await worker.api.members.addRole("915466119370907649", user_id, role);
     } else if(!!r.emoji.id) { //custom server emote
-        const role = emote_roles_map.get(r.emoji.id);
+        let role = emote_roles_map.get(r.emoji.id);
         
-        if(!role) return;
+        //since :green_circle: exists on two messages, differentiate between them
+        if(!role) {
+            if(r.message_id === "930969230084546641") { //junior
+                role = "930965888700678216";
+            } else if(r.message_id === "1061919018434433054") { //altunkaya
+                role = "1020443675026800670";
+            } else {
+                return;
+            }
+        }
         
         console.log(`added ${role} to ${user_id}`);
         
